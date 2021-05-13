@@ -2,7 +2,7 @@ FROM php:5.6-alpine
 
 RUN apk add --no-cache git \
 && wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer \
-&& mkdir -p /composer && COMPOSER_HOME="/composer" composer global require enomotodev/gitlabci-composer-update-mr --no-progress \
+&& mkdir -p /composer && COMPOSER_HOME="/composer" composer global require enomotodev/gitlabci-composer-update-mr:^v1.1 --no-progress \
 && rm -rf /composer/cache && mkdir /composer/cache && chmod 777 /composer/cache
 
 ENV COMPOSER_HOME="/composer"
