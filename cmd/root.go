@@ -8,14 +8,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var Version = "dev"
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "gitlabci-composer-update-mr <username> <email> <base>",
+	Use:   "gitlabci-composer-update-mr <commit-user> <commit-email> <source-branch>",
 	Short: "A brief description of your application",
 	Long: `A Gitlab CI utility to create composer update merge requests.
-https://github.com/axllent/gitlabci-composer-update-mr`,
+
+Documentation:
+  https://github.com/axllent/gitlabci-composer-update-mr
+`,
 	Args: cobra.ExactArgs(3),
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
