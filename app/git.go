@@ -9,15 +9,16 @@ import (
 )
 
 var (
-	gitClient *gitlab.Client
-
+	gitClient  *gitlab.Client
 	gitIsSetup bool
 )
 
+// SwitchBranch will switch to a branch
 func SwitchBranch(branch string) (string, error) {
 	return run(Config.GitPath, "checkout", branch)
 }
 
+// CreateMergeBranch creates the merge branch using git
 func CreateMergeBranch() error {
 	if err := gitSetup(); err != nil {
 		return err
@@ -52,6 +53,8 @@ func deleteOriginBranch(branch string) error {
 	return nil
 }
 
+// GitSetup will set up the local git instance wth the user.name, user.email
+// and update remote url for committing
 func gitSetup() error {
 	if gitIsSetup {
 		return nil

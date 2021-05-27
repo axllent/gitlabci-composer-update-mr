@@ -70,7 +70,6 @@ func isFile(path string) bool {
 }
 
 // Which locates a binary in the current $PATH.
-// It will append ".exe" to the filename if the platform is Windows.
 func which(binName string) (string, error) {
 	return exec.LookPath(binName)
 }

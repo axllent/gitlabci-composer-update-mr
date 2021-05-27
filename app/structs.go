@@ -1,5 +1,6 @@
 package app
 
+// Package struct for composer
 type Package struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
