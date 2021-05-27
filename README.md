@@ -2,7 +2,7 @@
 
 A series of official PHP Alpine [docker images](https://hub.docker.com/r/axllent/gitlabci-composer-update-mr) containing a utility (`gitlabci-composer-update-mr`) for automated scheduled "`composer update`" merge requests in Gitlab.
 
-This is not a standalone container, and is designed for Gitlab CI integration only.
+This docker image is designed for Gitlab CI integration only and cannot be used as a stand-alone utility.
 
 This binary version of the utility (written in Go) is based on [enomotodev/gitlabci-composer-update-mr](https://github.com/enomotodev/gitlabci-composer-update-mr), however due to PHP version restrictions of the original project it has been completely rewritten. Several extra options have been added too.
 
