@@ -1,6 +1,9 @@
 package app
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
+	"io"
 	"os"
 	"os/exec"
 	"strconv"
@@ -70,6 +73,37 @@ func isFile(path string) bool {
 // It will append ".exe" to the filename if the platform is Windows.
 func which(binName string) (string, error) {
 	return exec.LookPath(binName)
+}
+
+// HashFileSHA1 will return the SHA1 hash of a file
+func hashFileSHA1(filePath string) (string, error) {
+	//Initialize variable returnMD5String now in case an error has to be returned
+	var returnSHA1String string
+
+	//Open the filepath passed by the argument and check for any error
+	file, err := os.Open(filePath)
+	if err != nil {
+		return returnSHA1String, err
+	}
+
+	//Tell the program to call the following function when the current function returns
+	defer file.Close()
+
+	//Open a new SHA1 hash interface to write to
+	hash := sha1.New()
+
+	//Copy the file in the hash interface and check for any error
+	if _, err := io.Copy(hash, file); err != nil {
+		return returnSHA1String, err
+	}
+
+	//Get the 20 bytes hash
+	hashInBytes := hash.Sum(nil)[:20]
+
+	//Convert the bytes to a string
+	returnSHA1String = hex.EncodeToString(hashInBytes)
+
+	return returnSHA1String, nil
 }
 
 // // PrettyPrint for debugging
