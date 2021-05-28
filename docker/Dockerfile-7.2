@@ -11,9 +11,11 @@ FROM php:7.2-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache git bash \
+RUN apk add --no-cache git bash icu-libs \
 && wget https://getcomposer.org/download/latest-1.x/composer.phar -O /usr/local/bin/composer-1 && chmod +x /usr/local/bin/composer-1 \
-&& wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer-2 && chmod +x /usr/local/bin/composer-2
+&& wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer-2 && chmod +x /usr/local/bin/composer-2 \
+&& apk add --no-cache --virtual build-dependencies icu-dev \
+&& docker-php-ext-install intl && apk del build-dependencies
 
 COPY --from=builder /app/gitlabci-composer-update-mr /usr/local/bin/gitlabci-composer-update-mr
 
