@@ -45,7 +45,7 @@ func BuildConfig() {
 
 	Config.ComposerPath, err = which(composerVersion)
 	if err != nil {
-		errors = append(errors, fmt.Errorf("\"%s\" not found", Config.ComposerPath))
+		errors = append(errors, fmt.Errorf("\"%s\" not found", composerVersion))
 	}
 
 	Config.GitPath, err = which("git")
