@@ -76,3 +76,34 @@ The tool has several options which can be configured via Gitlab CI variables, ei
 |`COMPOSER_MR_ASSIGNEES`       |      |MR assignees (comma-separated usernames)            |
 |`COMPOSER_MR_REVIEWERS`       |      |MR reviewers (comma-separated usernames)            |
 |`COMPOSER_MR_REPLACE_OPEN`    |`true`|Replace outdated open composer-update merge requests|
+
+
+## Environment variable notes
+
+### `COMPOSER_MR_COMPOSER_VERSION`
+
+Currently both composer 1 & 2 (default) are provided, and are current at the time of the docker build. If you require the very latest composer version you can always run `composer-1 self-update` or `composer-2 self-update` as part of your CI process prior to the `gitlabci-composer-update-mr` command.
+
+
+### `COMPOSER_MR_BRANCH_PREFIX`
+
+Merge request branches are named similar to `composer-update-<utc-date>`, eg: `composer-update-20210527083313`. You can add a prefix to these branches, for instance `COMPOSER_MR_BRANCH_PREFIX` => `feature/` which will in future create the branches like `feature/composer-update-20210527083313` (for instance for use within git flow).
+
+
+### `COMPOSER_MR_LABELS`
+
+You can set as many labels as you like simply by comma-separating the environment value, eg `COMPOSER_MR_LABELS` => `Composer Update, Auto`. Please note that these labels are used to search for previous merge requests, so if you edit or add labels, prior merge requests may get ignored.
+
+
+### `COMPOSER_MR_ASSIGNEES`, `COMPOSER_MR_REVIEWERS`
+
+Comma-separate usernames to assign to either merge request assignees or reviewers. These users must have access to the project or exist, otherwise they are silently ignored from the merge request.
+
+
+### `COMPOSER_MR_REPLACE_OPEN`
+
+Gitlab Composer Updater MR will always add the sha1sum of the `composer.lock` to any merge request to allow comparison. Upon update, if an open merge request is found with a matching sha1sum, then the current update is skipped.
+
+If no matching sha1sum merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
+
+In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
