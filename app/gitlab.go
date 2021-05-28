@@ -8,6 +8,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
+// GetAPIToken returns the token from the CI environment
 func getAPIToken() string {
 	if os.Getenv("COMPOSER_MR_TOKEN") != "" {
 		return os.Getenv("COMPOSER_MR_TOKEN")
@@ -16,6 +17,7 @@ func getAPIToken() string {
 	return os.Getenv("GITLAB_API_PRIVATE_TOKEN")
 }
 
+// Client will set up the Gitlab API connection
 func client() (*gitlab.Client, error) {
 	if gitClient != nil {
 		return gitClient, nil
@@ -73,6 +75,8 @@ func MRExists(checksum string) bool {
 	return false
 }
 
+// RemoveOldMRs will remove old merge requests (if enabled)
+// by deleting the branches
 func RemoveOldMRs() error {
 	if !envTrue("COMPOSER_MR_REPLACE_OPEN", true) {
 		return nil
@@ -110,6 +114,8 @@ func RemoveOldMRs() error {
 	return nil
 }
 
+// CreateMergeRequest will create a merge request for the branch
+// setting the title, description and other options
 func CreateMergeRequest(title, description string) error {
 	client, err := client()
 	if err != nil {
