@@ -11,7 +11,7 @@ import (
 )
 
 func ComposerUpdate() (string, error) {
-	return run(Config.ComposerPath, "update", "--no-progress", "--ignore-platform-reqs")
+	return run(Config.ComposerPath, "update", "--no-progress")
 }
 
 func ParseComposerLock() (ComposerLock, error) {
