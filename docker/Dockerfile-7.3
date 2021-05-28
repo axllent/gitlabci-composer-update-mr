@@ -12,7 +12,8 @@ FROM php:7.3-alpine
 WORKDIR /app
 
 RUN apk add --no-cache git bash \
-&& wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+&& wget https://getcomposer.org/download/latest-1.x/composer.phar -O /usr/local/bin/composer-1 && chmod +x /usr/local/bin/composer-1 \
+&& wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer-2 && chmod +x /usr/local/bin/composer-2
 
 COPY --from=builder /app/gitlabci-composer-update-mr /usr/local/bin/gitlabci-composer-update-mr
 
