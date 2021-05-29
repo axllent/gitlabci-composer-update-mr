@@ -11,7 +11,8 @@ RUN apk add --no-cache git bash icu-libs \
 && wget https://getcomposer.org/download/latest-1.x/composer.phar -O /usr/local/bin/composer-1 && chmod +x /usr/local/bin/composer-1 \
 && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer-2 && chmod +x /usr/local/bin/composer-2 \
 && apk add --no-cache --virtual build-dependencies icu-dev \
-&& docker-php-ext-install intl && apk del build-dependencies
+&& docker-php-ext-install intl && apk del build-dependencies && \
+rm -rf /usr/src/php /usr/local/bin/phpdbg /usr/local/bin/php-cgi
 
 COPY --from=builder /app/gitlabci-composer-update-mr /usr/local/bin/gitlabci-composer-update-mr
 
