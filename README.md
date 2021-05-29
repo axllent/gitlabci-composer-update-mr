@@ -95,7 +95,7 @@ Merge request branches are named similar to `composer-update-<utc-date>`, eg: `c
 You can set as many labels as you like simply by comma-separating the environment value, eg `COMPOSER_MR_LABELS` => `Composer Update, Auto`. Please note that these labels are used to search for previous merge requests, so if you edit or add labels, prior merge requests may get ignored.
 
 
-### `COMPOSER_MR_ASSIGNEES`, `COMPOSER_MR_REVIEWERS`
+### `COMPOSER_MR_ASSIGNEES`/`COMPOSER_MR_REVIEWERS`
 
 Comma-separate usernames to assign to either merge request assignees or reviewers. These users must have access to the project or exist, otherwise they are silently ignored from the merge request.
 
@@ -107,3 +107,8 @@ Gitlab Composer Updater MR will always add the sha1sum of the `composer.lock` to
 If no matching sha1sum merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
 
 In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
+
+
+## Building your own docker images
+
+The `docker/Dockerfile-*` recipes builds both `gitlabci-composer-update-mr` and use official PHP docker images. Please refer to those Dockerfiles for details on build instructions.
