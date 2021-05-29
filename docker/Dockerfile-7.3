@@ -2,10 +2,14 @@ FROM golang:1.16-alpine as builder
 
 ENV CGO_ENABLED=0
 
-COPY . /appRUN CGO_ENABLED=0 go build -o gitlabci-composer-update-mr -ldflags "-s -w" . && \
+COPY . /app
+WORKDIR /app
+RUN CGO_ENABLED=0 go build -o gitlabci-composer-update-mr -ldflags "-s -w" . && \
 apk add --no-cache upx && upx -9 gitlabci-composer-update-mr
 
 FROM php:7.3-alpine
+
+WORKDIR /app
 
 RUN apk add --no-cache git bash icu-libs \
 && wget https://getcomposer.org/download/latest-1.x/composer.phar -O /usr/local/bin/composer-1 && chmod +x /usr/local/bin/composer-1 \
