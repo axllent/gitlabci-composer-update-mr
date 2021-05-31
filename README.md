@@ -1,8 +1,8 @@
-# Gitlab Composer Updater MR
+# GitLab Composer Updater MR
 
-A series of official PHP [docker images](https://hub.docker.com/r/axllent/gitlabci-composer-update-mr) containing a utility (`gitlabci-composer-update-mr`) for automated scheduled `composer update` merge requests in Gitlab.
+A series of official PHP [docker images](https://hub.docker.com/r/axllent/gitlabci-composer-update-mr) containing a utility (`gitlabci-composer-update-mr`) for automated scheduled `composer update` merge requests in GitLab.
 
-This docker image is designed for Gitlab CI integration only and cannot be used as a stand-alone utility.
+This docker image is designed for GitLab CI integration only and cannot be used as a stand-alone utility.
 
 This binary version of the utility (written in Go) is based on [enomotodev/gitlabci-composer-update-mr](https://github.com/enomotodev/gitlabci-composer-update-mr), however due to PHP version restrictions of the original project it has been completely rewritten. Several extra options have been added too.
 
@@ -17,18 +17,18 @@ This binary version of the utility (written in Go) is based on [enomotodev/gitla
 - MRs descriptions contain a full list of added, updated and deleted packages, linking to version comparisons where possible for each package.
 - Auto-assign MR prefix (to suit work flow, eg "feature/").
 - Auto-assign MR labels.
-- Auto-assign MR to assignees & reviewers.
+- Auto-assign MR to assignees & reviewers. Note: assigning multiple assignees/reviewers is a GitLab premium feature, see [Environment variable notes](#environment-variable-notes) below.
 
 
 ## Usage
 
 ### Setting up GitLab personal access token for GitLabCI
 
-A GitLab personal access token is required for creating merge requests in your repository. It may be useful to create a new user specifically for auto updates,assigning them sufficient permissions to read/write access to the repository. Gitlab Composer Updater MR will never modify your source branch, and will only (by default) remove old branches of outdated open merge requests that were previously created by the same user (the owner of the token).
+A GitLab personal access token is required for creating merge requests in your repository. It may be useful to create a new user specifically for auto updates,assigning them sufficient permissions to read/write access to the repository. GitLab Composer Updater MR will never modify your source branch, and will only (by default) remove old branches of outdated open merge requests that were previously created by the same user (the owner of the token).
 
 1. Go to your (or the user you created) account's settings page and generate a personal access token with `api` scope `Account` -> `Preferences` -> `Access Tokens`
 2. In your GitLab dashboard, go to your project's `Settings` -> `CI /CD` -> `Environment variables`. This can also be set on a group level if you prefer.
-3. Create an environment variable `COMPOSER_MR_TOKEN` with the GitLab personal access token from step #1. See [Environment options](#Environment-options) for all configuration options.
+3. Create an environment variable `COMPOSER_MR_TOKEN` with the GitLab personal access token from step #1. See [Environment options](#environment-options) for all configuration options.
 4. Make sure you have merge requests enabled for your project.
 
 
@@ -66,7 +66,7 @@ eg: `- gitlabci-composer-update-mr composer-update-mr mr@example.com develop`
 
 ## Environment options
 
-The tool has several options which can be configured via Gitlab CI variables, either to your project or alternatively inherited via the group variables. The only required variable is `COMPOSER_MR_TOKEN`, the rest are optional.
+The tool has several options which can be configured via GitLab CI variables, either to your project or alternatively inherited via the group variables. The only required variable is `COMPOSER_MR_TOKEN`, the rest are optional.
 
 |CI environment variable|Default|Description|
 --- | :---: | ---
@@ -100,10 +100,12 @@ You can set as many labels as you like simply by comma-separating the environmen
 
 Comma-separate usernames to assign to either merge request assignees or reviewers. These users must have access to the project or exist, otherwise they are silently ignored from the merge request.
 
+Please note that multiple assignees/reviewers is a [GitLab premium feature](https://docs.gitlab.com/ee/user/project/issues/multiple_assignees_for_issues.html) and is [not currently supported](https://gitlab.com/gitlab-org/gitlab/-/issues/22171) in the Community Edition of GitLab. If you have assigned multiple users and you are using the Community Edition, then just the first user is assigned.
+
 
 ### `COMPOSER_MR_REPLACE_OPEN`
 
-Gitlab Composer Updater MR will always add the sha1sum of the `composer.lock` to any merge request to allow comparison. Upon update, if an open merge request is found with a matching sha1sum, then the current update is skipped.
+GitLab Composer Updater MR will always add the sha1sum of the `composer.lock` to any merge request to allow comparison. Upon update, if an open merge request is found with a matching sha1sum, then the current update is skipped.
 
 If no matching sha1sum merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
 
