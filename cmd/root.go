@@ -96,5 +96,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
+	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
+	rootCmd.Flags().MarkHidden("repo")
 }
