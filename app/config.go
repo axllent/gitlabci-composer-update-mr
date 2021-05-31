@@ -68,11 +68,11 @@ func BuildConfig() {
 	Config.MRBranch = fmt.Sprintf("%scomposer-update-%s", envString("COMPOSER_MR_BRANCH_PREFIX", ""), t)
 
 	if len(errors) > 0 {
-		fmt.Println("Error:")
+		fmt.Println("\n==========\nError:")
 		for _, err := range errors {
 			fmt.Printf("- %v\n", err)
 		}
-
+		fmt.Println("==========")
 		os.Exit(1)
 	}
 }
