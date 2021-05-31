@@ -67,6 +67,13 @@ func BuildConfig() {
 
 	Config.MRBranch = fmt.Sprintf("%scomposer-update-%s", envString("COMPOSER_MR_BRANCH_PREFIX", ""), t)
 
+	if len(errors) == 0 {
+		// test if project's merge requests are accessible
+		if !isMREnabled() {
+			errors = append(errors, fmt.Errorf("merge requests not enabled for %s", os.Getenv("CI_PROJECT_PATH")))
+		}
+	}
+
 	if len(errors) > 0 {
 		fmt.Println("\n==========\nError:")
 		for _, err := range errors {
