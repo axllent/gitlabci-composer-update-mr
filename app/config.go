@@ -70,7 +70,7 @@ func BuildConfig() {
 	if len(errors) == 0 {
 		// test if project's merge requests are accessible
 		if !isMREnabled() {
-			errors = append(errors, fmt.Errorf("merge requests not enabled for %s", os.Getenv("CI_PROJECT_PATH")))
+			errors = append(errors, fmt.Errorf("merge requests not enabled for %s, or API user doesn't have access to project", os.Getenv("CI_PROJECT_PATH")))
 		}
 	}
 

@@ -202,9 +202,6 @@ func getAssigneeIDS() []int {
 		members, _, err := client.ProjectMembers.ListAllProjectMembers(os.Getenv("CI_PROJECT_ID"), &gitlab.ListProjectMembersOptions{})
 		if err == nil {
 			for _, m := range members {
-				if _, ok := lookup[strings.ToLower(m.Email)]; ok {
-					assigneeIDs = append(assigneeIDs, m.ID)
-				}
 				if _, ok := lookup[strings.ToLower(m.Username)]; ok {
 					assigneeIDs = append(assigneeIDs, m.ID)
 				}
