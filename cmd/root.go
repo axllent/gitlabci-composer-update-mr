@@ -29,46 +29,46 @@ Documentation:
 
 		preupdate, err := app.ParseComposerLock()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		if _, err := app.SwitchBranch(app.Config.GitBranch); err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		if _, err := app.ComposerUpdate(); err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		postupdate, err := app.ParseComposerLock()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		// check if composer lock has been modified
 		if preupdate.Checksum == postupdate.Checksum {
-			fmt.Println("No changes.")
+			fmt.Println("\n==========\nThere are no updated composer modules\n==========")
 			os.Exit(0)
 		}
 
 		diff := app.CompareDiffs(preupdate, postupdate)
 
 		if app.MRExists(diff.Checksum) {
-			fmt.Println("An identical merge request already exists with checksum: " + diff.Checksum)
+			fmt.Printf("\n==========\nAn identical merge request already exists with checksum: %s\n==========\n", diff.Checksum)
 			os.Exit(0)
 		}
 
 		if err := app.RemoveOldMRs(); err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		if err := app.CreateMergeBranch(); err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
@@ -80,7 +80,7 @@ Documentation:
 		mrTitle := fmt.Sprintf("Composer update: %d %s", len(diff.Packages), pkgs)
 
 		if err := app.CreateMergeRequest(mrTitle, diff.Description); err != nil {
-			fmt.Println(err)
+			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 	},
@@ -96,5 +96,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
+	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
+	rootCmd.Flags().MarkHidden("repo")
 }

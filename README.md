@@ -29,6 +29,7 @@ A GitLab personal access token is required for creating merge requests in your r
 1. Go to your (or the user you created) account's settings page and generate a personal access token with `api` scope `Account` -> `Preferences` -> `Access Tokens`
 2. In your GitLab dashboard, go to your project's `Settings` -> `CI /CD` -> `Environment variables`. This can also be set on a group level if you prefer.
 3. Create an environment variable `COMPOSER_MR_TOKEN` with the GitLab personal access token from step #1. See [Environment options](#Environment-options) for all configuration options.
+4. Make sure you have merge requests enabled for your project.
 
 
 ### Configure `.gitlab-ci.yml`

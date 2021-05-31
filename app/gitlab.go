@@ -40,6 +40,27 @@ func client() (*gitlab.Client, error) {
 	return git, nil
 }
 
+// IsMREnabled is a simple test to determine whether merge requests are enabled for a project.
+func isMREnabled() bool {
+	client, err := client()
+	if err != nil {
+		fmt.Println("Error authenticating with API: ", err)
+		return false
+	}
+
+	opts := gitlab.ListProjectMergeRequestsOptions{
+		Search: gitlab.String("Just a random string that won't return too many results (*^$%#"),
+	}
+
+	_, _, err = client.MergeRequests.ListProjectMergeRequests(os.Getenv("CI_PROJECT_ID"), &opts)
+	if err != nil {
+		fmt.Println("Error listing MRs: ", err)
+		return false
+	}
+
+	return true
+}
+
 // Checks to see if an existing merge request exists
 // based on sha1sum of the content
 func MRExists(checksum string) bool {
@@ -137,7 +158,7 @@ func CreateMergeRequest(title, description string) error {
 		return err
 	}
 
-	fmt.Printf("----\nMerge request #%d created: %s\n", mr.ID, mr.WebURL)
+	fmt.Printf("\n==========\nMerge request #%d created: %s\n", mr.ID, mr.WebURL)
 
 	if len(mr.Labels) > 0 {
 		fmt.Println("Labels:", strings.Join(mr.Labels, ", "))
@@ -156,6 +177,8 @@ func CreateMergeRequest(title, description string) error {
 			fmt.Println("-", a.Username)
 		}
 	}
+
+	fmt.Println("==========")
 
 	return nil
 }
