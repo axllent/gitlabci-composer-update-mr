@@ -27,25 +27,25 @@ Documentation:
 
 		app.BuildConfig()
 
-		preupdate, err := app.ParseComposerLock()
-		if err != nil {
-			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
+		if err := app.SwitchBranch(app.Config.GitBranch); err != nil {
+			fmt.Printf("\n==========\nError switching branch: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
-		if _, err := app.SwitchBranch(app.Config.GitBranch); err != nil {
-			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
+		preupdate, err := app.ParseComposerLock()
+		if err != nil {
+			fmt.Printf("\n==========\nError parsing composer.lock: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		if _, err := app.ComposerUpdate(); err != nil {
-			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
+			fmt.Printf("\n==========\nError updating with composer: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		postupdate, err := app.ParseComposerLock()
 		if err != nil {
-			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
+			fmt.Printf("\n==========\nError parsing composer.lock: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
@@ -63,12 +63,12 @@ Documentation:
 		}
 
 		if err := app.RemoveOldMRs(); err != nil {
-			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
+			fmt.Printf("\n==========\nError removing old merge requests: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		if err := app.CreateMergeBranch(); err != nil {
-			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
+			fmt.Printf("\n==========\nError creating merge request: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 

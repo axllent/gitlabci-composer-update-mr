@@ -14,8 +14,16 @@ var (
 )
 
 // SwitchBranch will switch to a branch
-func SwitchBranch(branch string) (string, error) {
-	return run(Config.GitPath, "checkout", branch)
+func SwitchBranch(branch string) error {
+	fmt.Println("Pulling latest changes from", branch)
+	if _, err := runQuiet(Config.GitPath, "checkout", branch); err != nil {
+		return err
+	}
+	if _, err := runQuiet(Config.GitPath, "pull", "--rebase"); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // CreateMergeBranch creates the merge branch using git
