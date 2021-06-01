@@ -57,6 +57,8 @@ where:
 
 eg: `- gitlabci-composer-update-mr composer-update-mr mr@example.com develop`
 
+Regardless what branch your schedule is set to run on, the latest `<source-branch>` will always be used.
+
 
 ### Setting schedule
 
