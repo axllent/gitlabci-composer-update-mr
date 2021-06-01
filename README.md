@@ -107,9 +107,9 @@ Please note that multiple assignees/reviewers is a [GitLab premium feature](http
 
 ### `COMPOSER_MR_REPLACE_OPEN`
 
-GitLab Composer Updater MR will always add the sha1sum of the `composer.lock` to any merge request to allow comparison. Upon update, if an open merge request is found with a matching sha1sum, then the current update is skipped.
+GitLab Composer Updater MR will always add a checksum of the `composer.lock` to any merge request to allow comparison. Upon update, if an open merge request is found with a matching checksum, then the current update is skipped.
 
-If no matching sha1sum merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
+If no matching checksum in a merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
 
 In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
 

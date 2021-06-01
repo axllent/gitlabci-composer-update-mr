@@ -10,7 +10,7 @@ import (
 // Run will execute an external command within the set Config.Path
 // printing & returning all Stdout & Stderr
 func run(bin string, args ...string) (string, error) {
-	cmd := exec.Command(bin, args...)
+	cmd := exec.Command(bin, args...) // #nosec
 	cmd.Dir = Config.RepoDir
 
 	var stdBuffer bytes.Buffer
@@ -29,7 +29,7 @@ func run(bin string, args ...string) (string, error) {
 // RunQuiet will execute an external command within the set Config.Path
 // returning all Stdout & Stderr
 func runQuiet(bin string, args ...string) (string, error) {
-	cmd := exec.Command(bin, args...)
+	cmd := exec.Command(bin, args...) // #nosec
 	cmd.Dir = Config.RepoDir
 
 	var stdBuffer bytes.Buffer
