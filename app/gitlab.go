@@ -62,7 +62,7 @@ func isMREnabled() bool {
 }
 
 // Checks to see if an existing merge request exists
-// based on sha1sum of the content
+// based on checksum of the content
 func MRExists(checksum string) bool {
 	client, err := client()
 	if err != nil {
