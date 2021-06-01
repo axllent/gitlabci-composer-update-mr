@@ -97,5 +97,8 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
-	rootCmd.Flags().MarkHidden("repo")
+	if err := rootCmd.Flags().MarkHidden("repo"); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

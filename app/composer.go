@@ -21,12 +21,21 @@ func ParseComposerLock() (ComposerLock, error) {
 	if err != nil {
 		return v, err
 	}
-	defer jsonFile.Close()
 
-	b, _ := ioutil.ReadAll(jsonFile)
-	json.Unmarshal(b, &v)
+	b, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		return v, err
+	}
 
-	v.Checksum, err = hashFileSHA1(Config.ComposerLockFile)
+	if err := jsonFile.Close(); err != nil {
+		return v, err
+	}
+
+	if err := json.Unmarshal(b, &v); err != nil {
+		return v, err
+	}
+
+	v.Checksum, err = fileHash(Config.ComposerLockFile)
 	if err != nil {
 		return v, err
 	}
