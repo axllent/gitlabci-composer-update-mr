@@ -10,7 +10,7 @@ apk add --no-cache upx && upx -9 gitlabci-composer-update-mr
 
 FROM php:7.0-alpine
 
-RUN apk add --no-cache git bash icu-libs \
+RUN apk add --no-cache git bash icu-libs openssh \
 && wget https://getcomposer.org/download/latest-1.x/composer.phar -O /usr/local/bin/composer-1 && chmod +x /usr/local/bin/composer-1 \
 && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer-2 && chmod +x /usr/local/bin/composer-2 \
 && apk add --no-cache --virtual build-dependencies icu-dev \
