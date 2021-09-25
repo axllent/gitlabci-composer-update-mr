@@ -16,10 +16,12 @@ var (
 // SwitchBranch will switch to a branch
 func SwitchBranch(branch string) error {
 	fmt.Println("Pulling latest changes from", branch)
-	if _, err := runQuiet(Config.GitPath, "checkout", branch); err != nil {
+	if out, err := runQuiet(Config.GitPath, "checkout", branch); err != nil {
+		fmt.Println(out)
 		return err
 	}
-	if _, err := runQuiet(Config.GitPath, "pull", "--rebase"); err != nil {
+	if out, err := runQuiet(Config.GitPath, "pull", "--rebase"); err != nil {
+		fmt.Println(out)
 		return err
 	}
 
@@ -31,16 +33,20 @@ func CreateMergeBranch() error {
 	if err := gitSetup(); err != nil {
 		return err
 	}
-	if _, err := runQuiet(Config.GitPath, "checkout", "-b", Config.MRBranch); err != nil {
+	if out, err := runQuiet(Config.GitPath, "checkout", "-b", Config.MRBranch); err != nil {
+		fmt.Println(out)
 		return err
 	}
-	if _, err := runQuiet(Config.GitPath, "add", "."); err != nil {
+	if out, err := runQuiet(Config.GitPath, "add", "."); err != nil {
+		fmt.Println(out)
 		return err
 	}
-	if _, err := runQuiet(Config.GitPath, "commit", "-m", "$ composer update"); err != nil {
+	if out, err := runQuiet(Config.GitPath, "commit", "-m", "$ composer update"); err != nil {
+		fmt.Println(out)
 		return err
 	}
-	if _, err := runQuiet(Config.GitPath, "push", "origin", Config.MRBranch); err != nil {
+	if out, err := runQuiet(Config.GitPath, "push", "origin", Config.MRBranch); err != nil {
+		fmt.Println(out)
 		return err
 	}
 
@@ -54,7 +60,8 @@ func deleteOriginBranch(branch string) error {
 	}
 
 	fmt.Printf("Deleting older branch/MR: %s\n", branch)
-	if _, err := runQuiet(Config.GitPath, "push", "origin", ":"+branch); err != nil {
+	if out, err := runQuiet(Config.GitPath, "push", "origin", ":"+branch); err != nil {
+		fmt.Println(out)
 		return err
 	}
 
