@@ -24,11 +24,11 @@ func client() (*gitlab.Client, error) {
 	}
 
 	token := getAPIToken()
-	projectId := os.Getenv("CI_PROJECT_ID")
+	projectID := os.Getenv("CI_PROJECT_ID")
 	projectPath := os.Getenv("CI_PROJECT_PATH")
-	repositoryUrl := os.Getenv("CI_REPOSITORY_URL")
+	repositoryURL := os.Getenv("CI_REPOSITORY_URL")
 	apiURL := os.Getenv("CI_API_V4_URL")
-	if token == "" || projectId == "" || projectPath == "" || repositoryUrl == "" || apiURL == "" {
+	if token == "" || projectID == "" || projectPath == "" || repositoryURL == "" || apiURL == "" {
 		return nil, fmt.Errorf("gitlab environment variables not set")
 	}
 
@@ -61,7 +61,7 @@ func isMREnabled() bool {
 	return true
 }
 
-// Checks to see if an existing merge request exists
+// MRExists checks to see if an existing merge request exists
 // based on checksum of the content
 func MRExists(checksum string) bool {
 	client, err := client()

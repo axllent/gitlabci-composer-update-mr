@@ -10,10 +10,12 @@ import (
 	"strings"
 )
 
+// ComposerUpdate will update composer
 func ComposerUpdate() (string, error) {
 	return run(Config.ComposerPath, "update", "--no-progress")
 }
 
+// ParseComposerLock parses a composer lock file
 func ParseComposerLock() (ComposerLock, error) {
 	var v = ComposerLock{}
 
