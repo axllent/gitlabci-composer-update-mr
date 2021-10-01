@@ -114,19 +114,16 @@ If no matching checksum in a merge request is found, then any previous outdated 
 In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
 
 
-## Building your own docker images
+---
 
-The `docker/Dockerfile-*` recipes builds both `gitlabci-composer-update-mr` and use official PHP docker images. Please refer to those Dockerfiles for details on build instructions.
+## Additional notes
 
-
-## Notes
-
-## Composer versions
+### Composer versions
 
 Both composer 1 & 2 are installed in the docker container, and can be called via `composer-1` and `composer-2` respectively. The composer update process will call the correct one accordingly depending on the `COMPOSER_MR_COMPOSER_VERSION` environment variable.
 
 
-### Private Packages
+### Private packages
 
 If you are using GitLab’s [composer package registry](https://docs.gitlab.com/ee/user/packages/composer_repository/) to host private packages, you need to configure composer to use an API token to retrieve them.
 
@@ -141,3 +138,7 @@ composer-update-mr:
     - composer-2 config http-basic.{your-gitlab-server-domain} ___token___ "$COMPOSER_MR_TOKEN"
     - gitlabci-composer-update-mr <commit-user> <commit-email> <source-branch>
 ```
+
+## Building your own docker images
+
+The `docker/Dockerfile-*` recipes builds both `gitlabci-composer-update-mr` and use official PHP docker images. Please refer to those Dockerfiles for details on build instructions.
