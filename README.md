@@ -66,6 +66,22 @@ Regardless what branch your schedule is set to run on, the latest `<source-branc
 2. Create new schedule and save
 
 
+### Private Packages
+
+If you are using GitLab’s [composer package registry](https://docs.gitlab.com/ee/user/packages/composer_repository/) to host private packages, you need to configure composer to use an API token to retrieve them.
+
+Example:
+
+```yml
+composer-update-mr:
+  script:
+    # Use composer-1 or composer2 based on your requirements.
+    # Replace {your-gitlab-server-domain} with the domain name for your server.
+    # You can use the same $COMPOSER_MR_TOKEN or supply a different API token with at least the `read_api` scope. $CI_JOB_TOKEN does **not** work.
+    - composer-2 config http-basic.{your-gitlab-server-domain} ___token___ "$COMPOSER_MR_TOKEN"
+    - gitlabci-composer-update-mr <commit-user> <commit-email> <source-branch>
+```
+
 ## Environment options
 
 The tool has several options which can be configured via GitLab CI variables, either to your project or alternatively inherited via the group variables. The only required variable is `COMPOSER_MR_TOKEN`, the rest are optional.
