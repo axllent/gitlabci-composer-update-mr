@@ -37,7 +37,7 @@ func CreateMergeBranch() error {
 		fmt.Println(out)
 		return err
 	}
-	if out, err := runQuiet(Config.GitPath, "add", "."); err != nil {
+	if out, err := runQuiet(Config.GitPath, "add", "composer.json composer.lock"); err != nil {
 		fmt.Println(out)
 		return err
 	}
