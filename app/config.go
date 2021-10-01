@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	// Config struct
 	Config struct {
 		// ComposerPath binary path
 		ComposerPath string
