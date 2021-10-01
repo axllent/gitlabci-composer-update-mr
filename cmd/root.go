@@ -25,9 +25,6 @@ Documentation:
 		app.Config.GitEmail = args[1]
 		app.Config.GitBranch = args[2]
 
-		// Set composer auth for privately-hosted packages.
-		os.Setenv("COMPOSER_AUTH", os.Getenv("COMPOSER_MR_TOKEN"))
-
 		app.BuildConfig()
 
 		if err := app.SwitchBranch(app.Config.GitBranch); err != nil {

@@ -75,6 +75,10 @@ func BuildConfig() {
 		}
 	}
 
+	if len(envString("COMPOSER_MR_GITLAB_DOMAIN", "")) > 0 && len(envString("COMPOSER_MR_AUTH_TOKEN", "")) > 0 {
+		app.ComposerAuth(envString("COMPOSER_MR_GITLAB_DOMAIN", ""), envString("COMPOSER_MR_AUTH_TOKEN", ""))
+	}
+
 	if len(errors) > 0 {
 		fmt.Println("\n==========\nError:")
 		for _, err := range errors {

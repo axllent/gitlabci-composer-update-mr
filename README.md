@@ -72,13 +72,15 @@ The tool has several options which can be configured via GitLab CI variables, ei
 
 |CI environment variable|Default|Description|
 --- | :---: | ---
-|**`COMPOSER_MR_TOKEN`**       |      |**User token for merge requests (required)**        |
-|`COMPOSER_MR_COMPOSER_VERSION`|`2`   |Composer version (1 or 2)                           |
-|`COMPOSER_MR_BRANCH_PREFIX`   |      |MR branch prefix, eg "feature/"                     |
-|`COMPOSER_MR_LABELS`          |      |MR labels (comma-separated)                         |
-|`COMPOSER_MR_ASSIGNEES`       |      |MR assignees (comma-separated usernames)            |
-|`COMPOSER_MR_REVIEWERS`       |      |MR reviewers (comma-separated usernames)            |
-|`COMPOSER_MR_REPLACE_OPEN`    |`true`|Replace outdated open composer-update merge requests|
+|**`COMPOSER_MR_TOKEN`**       |      |**User token for merge requests (required)**         |
+|`COMPOSER_MR_COMPOSER_VERSION`|`2`   |Composer version (1 or 2)                            |
+|`COMPOSER_MR_BRANCH_PREFIX`   |      |MR branch prefix, eg "feature/"                      |
+|`COMPOSER_MR_LABELS`          |      |MR labels (comma-separated)                          |
+|`COMPOSER_MR_ASSIGNEES`       |      |MR assignees (comma-separated usernames)             |
+|`COMPOSER_MR_REVIEWERS`       |      |MR reviewers (comma-separated usernames)             |
+|`COMPOSER_MR_REPLACE_OPEN`    |`true`|Replace outdated open composer-update merge requests |
+|`COMPOSER_MR_GITLAB_DOMAIN`   |      |Domain of your GitLab instance                       |
+|`COMPOSER_MR_AUTH_TOKEN`      |      |API key or `CI_JOB_TOKEN` to access composer registry|
 
 
 ## Environment variable notes
@@ -112,6 +114,29 @@ GitLab Composer Updater MR will always add a checksum of the `composer.lock` to 
 If no matching checksum in a merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
 
 In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
+
+
+### `COMPOSER_MR_GITLAB_DOMAIN` and `COMPOSER_MR_AUTH_TOKEN`
+
+If you host private [composer packages](https://docs.gitlab.com/ee/user/packages/composer_repository/) in your GitLab instance, use these two variables to configure composer with credentials to access them.
+
+Example:
+
+```yaml
+stages:
+  - composer-update-mr
+
+composer-update-mr:
+  stage: composer-update-mr
+  image: axllent/gitlabci-composer-update-mr:<php-version>
+  only:
+    - schedules
+  variables:
+    COMPOSER_MR_GITLAB_DOMAIN: $CI_SERVER_HOST
+    COMPOSER_MR_AUTH_TOKEN: $CI_JOB_TOKEN # or $COMPOSER_MR_TOKEN
+  script:
+    - gitlabci-composer-update-mr <commit-user> <commit-email> <source-branch>
+```
 
 
 ## Building your own docker images

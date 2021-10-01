@@ -15,6 +15,11 @@ func ComposerUpdate() (string, error) {
 	return run(Config.ComposerPath, "update", "--no-progress")
 }
 
+// ComposerAuth will set auth credentials
+func ComposerAuth(domain, token) (string, error) {
+	return run(Config.ComposerPath, "config", "http-basic." + domain + " ___token___ "+ token)
+}
+
 // ParseComposerLock parses a composer lock file
 func ParseComposerLock() (ComposerLock, error) {
 	var v = ComposerLock{}
