@@ -139,6 +139,6 @@ composer-update-mr:
     - gitlabci-composer-update-mr <commit-user> <commit-email> <source-branch>
 ```
 
-## Building your own docker images
+### Building your own docker images
 
 The `docker/Dockerfile-*` recipes builds both `gitlabci-composer-update-mr` and use official PHP docker images. Please refer to those Dockerfiles for details on build instructions.
