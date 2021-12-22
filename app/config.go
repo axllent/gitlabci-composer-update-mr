@@ -14,6 +14,9 @@ var (
 		// ComposerPath binary path
 		ComposerPath string
 
+		// ComposerFlags composer flags
+		ComposerFlags []string
+
 		// ComposerLockFile file path
 		ComposerLockFile string
 
