@@ -8,7 +8,7 @@ RUN CGO_ENABLED=0 go build -o gitlabci-composer-update-mr -ldflags "-s -w" . && 
 apk add --no-cache upx && upx -9 gitlabci-composer-update-mr
 
 
-FROM php:7.4-alpine3.13
+FROM php:8.1-alpine
 
 RUN apk add --no-cache git bash icu-libs \
 && wget https://getcomposer.org/download/latest-1.x/composer.phar -O /usr/local/bin/composer-1 && chmod +x /usr/local/bin/composer-1 \

@@ -11,7 +11,7 @@ This binary version of the utility (written in Go) is based on [enomotodev/gitla
 
 - Run automated scheduled composer updates on your PHP projects.
 - Multiple PHP docker containers available (5.6, 7.0, 7.1, 7.2, 7.3, 7.4 & 8.0).
-- Supports both composer 1 & 2 (default 2).
+- Supports both composer 1 & 2 (default 2) - binaries are named `composer-1` & `composer-2`, and support additional flags via the `-f` flag.
 - Identical open MRs are detected and ignored (ie: no change since the last MR).
 - Replace outdated composer update MRs (default `true`). Old branches/MRs (that match the same user, and containing the same labels) will be deleted when a updated MR is generated.
 - MRs descriptions contain a full list of added, updated and deleted packages, linking to version comparisons where possible for each package.
@@ -114,6 +114,41 @@ If no matching checksum in a merge request is found, then any previous outdated 
 In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
 
 
-## Building your own docker images
+---
+
+## Additional notes
+
+### Composer versions
+
+Both composer 1 & 2 are installed in the docker container, and can be called via `composer-1` and `composer-2` respectively. The composer update process will call the correct one accordingly depending on the `COMPOSER_MR_COMPOSER_VERSION` environment variable.
+
+
+### Custom composer flags
+
+It is possible to assign additional flags to the `composer update` command, such as `-f "--ignore-platform-req=ext-*"`. This may be required if the docker container does not have the required extensions installed and you wish to bypass those composer checks. Multiple flags can be supplied by separating them with a comma, or providing multiple `-f` flags in your command.
+
+Your `gitlab-ci.yml` would then look something like:
+
+`- gitlabci-composer-update-mr composer-update-mr mr@example.com develop -f "--ignore-platform-req=ext-*"`
+
+
+### Private packages
+
+If you are using GitLab’s [composer package registry](https://docs.gitlab.com/ee/user/packages/composer_repository/) to host private packages, you need to configure composer to use an API token to retrieve them.
+
+Example:
+
+```yml
+composer-update-mr:
+  script:
+    # Use composer-1 or composer2 based on your requirements.
+    # Replace {your-gitlab-server-domain} with the domain name for your server.
+    # You can use the same $COMPOSER_MR_TOKEN or supply a different API token with at least the `read_api` scope. $CI_JOB_TOKEN does **not** work.
+    - composer-2 config http-basic.{your-gitlab-server-domain} ___token___ "$COMPOSER_MR_TOKEN"
+    - gitlabci-composer-update-mr <commit-user> <commit-email> <source-branch>
+```
+
+
+### Building your own docker images
 
 The `docker/Dockerfile-*` recipes builds both `gitlabci-composer-update-mr` and use official PHP docker images. Please refer to those Dockerfiles for details on build instructions.

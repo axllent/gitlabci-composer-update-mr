@@ -96,6 +96,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.Flags().StringSliceVarP(&app.Config.ComposerFlags, "composer-flags", "f", []string{}, "Custom composer flags")
 	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
 	if err := rootCmd.Flags().MarkHidden("repo"); err != nil {
 		fmt.Println(err)

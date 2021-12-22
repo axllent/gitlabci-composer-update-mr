@@ -12,7 +12,13 @@ import (
 
 // ComposerUpdate will update composer
 func ComposerUpdate() (string, error) {
-	return run(Config.ComposerPath, "update", "--no-progress")
+	args := []string{"update", "--no-progress"}
+
+	for _, f := range Config.ComposerFlags {
+		args = append(args, f)
+	}
+
+	return run(Config.ComposerPath, args...)
 }
 
 // ParseComposerLock parses a composer lock file
