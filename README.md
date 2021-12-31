@@ -10,7 +10,7 @@ This binary version of the utility (written in Go) is based on [enomotodev/gitla
 ## Main features
 
 - Run automated scheduled composer updates on your PHP projects.
-- Multiple PHP docker containers available (5.6, 7.0, 7.1, 7.2, 7.3, 7.4 & 8.0).
+- Multiple PHP docker containers available (5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0 & 8.1).
 - Supports both composer 1 & 2 (default 2) - binaries are named `composer-1` & `composer-2`, and support additional flags via the `-f` flag.
 - Identical open MRs are detected and ignored (ie: no change since the last MR).
 - Replace outdated composer update MRs (default `true`). Old branches/MRs (that match the same user, and containing the same labels) will be deleted when a updated MR is generated.
