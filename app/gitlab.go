@@ -70,10 +70,16 @@ func MRExists(checksum string) bool {
 		return false
 	}
 
+	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
+	labels := gitlab.Labels{}
+	for _, lbl := range lbls {
+		labels = append(labels, lbl)
+	}
+
 	opts := gitlab.ListProjectMergeRequestsOptions{
 		State:        gitlab.String("opened"),
 		TargetBranch: gitlab.String(Config.GitBranch),
-		Labels:       envCSVSlice("COMPOSER_MR_LABELS", []string{}),
+		Labels:       &labels,
 	}
 
 	me, _, err := client.Users.CurrentUser()
@@ -108,10 +114,16 @@ func RemoveOldMRs() error {
 		return fmt.Errorf("error authenticating with API: %s", err)
 	}
 
+	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
+	labels := gitlab.Labels{}
+	for _, lbl := range lbls {
+		labels = append(labels, lbl)
+	}
+
 	opts := gitlab.ListProjectMergeRequestsOptions{
 		State:        gitlab.String("opened"),
 		TargetBranch: gitlab.String(Config.GitBranch),
-		Labels:       envCSVSlice("COMPOSER_MR_LABELS", []string{}),
+		Labels:       &labels,
 	}
 
 	me, _, err := client.Users.CurrentUser()
@@ -143,6 +155,12 @@ func CreateMergeRequest(title, description string) error {
 		return err
 	}
 
+	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
+	labels := gitlab.Labels{}
+	for _, lbl := range lbls {
+		labels = append(labels, lbl)
+	}
+
 	opts := gitlab.CreateMergeRequestOptions{
 		Title:              gitlab.String(title),
 		Description:        gitlab.String(description),
@@ -151,7 +169,7 @@ func CreateMergeRequest(title, description string) error {
 		RemoveSourceBranch: gitlab.Bool(true),
 		AssigneeIDs:        getAssigneeIDS(),
 		ReviewerIDs:        getReviewerIDS(),
-		Labels:             envCSVSlice("COMPOSER_MR_LABELS", []string{}),
+		Labels:             &labels,
 	}
 	mr, _, err := client.MergeRequests.CreateMergeRequest(os.Getenv("CI_PROJECT_ID"), &opts)
 	if err != nil {
@@ -184,12 +202,12 @@ func CreateMergeRequest(title, description string) error {
 }
 
 // GetAssigneeIDS returns a slice of IDs assigned to the new merge request
-func getAssigneeIDS() []int {
+func getAssigneeIDS() *[]int {
 	assigneeIDs := []int{}
 
 	client, err := client()
 	if err != nil {
-		return assigneeIDs
+		return &assigneeIDs
 	}
 
 	assignees := envCSVSlice("COMPOSER_MR_ASSIGNEES", []string{})
@@ -209,16 +227,16 @@ func getAssigneeIDS() []int {
 		}
 	}
 
-	return assigneeIDs
+	return &assigneeIDs
 }
 
 // GetReviewerIDS returns a slice of IDs assigned to the new merge request
-func getReviewerIDS() []int {
+func getReviewerIDS() *[]int {
 	reviewerIDs := []int{}
 
 	client, err := client()
 	if err != nil {
-		return reviewerIDs
+		return &reviewerIDs
 	}
 
 	reviewers := envCSVSlice("COMPOSER_MR_REVIEWERS", []string{})
@@ -241,5 +259,5 @@ func getReviewerIDS() []int {
 		}
 	}
 
-	return reviewerIDs
+	return &reviewerIDs
 }
