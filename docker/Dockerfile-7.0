@@ -4,8 +4,9 @@ COPY . /app
 
 WORKDIR /app
 
-RUN CGO_ENABLED=0 go build -o gitlabci-composer-update-mr -ldflags "-s -w" . && \
-apk add --no-cache upx && upx -9 gitlabci-composer-update-mr
+RUN apk add --no-cache upx git && \
+CGO_ENABLED=0 go build -o gitlabci-composer-update-mr -ldflags "-s -w" . && \
+upx -9 gitlabci-composer-update-mr
 
 
 FROM php:7.0-alpine
