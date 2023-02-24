@@ -9,6 +9,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/spf13/cobra v1.6.1
-	github.com/xanzy/go-gitlab v0.80.0
+	github.com/xanzy/go-gitlab v0.80.2
+	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
 )
