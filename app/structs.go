@@ -30,7 +30,8 @@ type ComposerDiffPackage struct {
 
 // ComposerDiff struct
 type ComposerDiff struct {
-	Checksum    string
-	Packages    []ComposerDiffPackage
-	Description string
+	Checksum      string
+	Packages      []ComposerDiffPackage
+	Description   string
+	CommitMessage string
 }
