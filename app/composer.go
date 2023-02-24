@@ -109,9 +109,7 @@ func CompareDiffs(pre, post ComposerLock) ComposerDiff {
 	// generate markdown description
 	description := "## Updated Composer Packages\n\n"
 	description += "Checksum: " + diff.Checksum
-
 	description += "\n\n### Changes\n\n"
-
 	for _, p := range diff.Packages {
 		name := fmt.Sprintf("- [%s](%s): ", p.Name, p.URL)
 		version := fmt.Sprintf("`%s...REMOVED`\n", p.PreVersion)
@@ -126,8 +124,20 @@ func CompareDiffs(pre, post ComposerLock) ComposerDiff {
 		}
 		description += name + version
 	}
-
 	diff.Description = description
+
+	// generate git commit message
+	commitMessage := Config.GitCommitTitle + "\n"
+	for _, p := range diff.Packages {
+		version := fmt.Sprintf("%s...REMOVED", p.PreVersion)
+		if p.PreVersion != "" && p.PostVersion != "" {
+			version = fmt.Sprintf("%s...%s", p.PreVersion, p.PostVersion)
+		} else if p.PostVersion != "" {
+			version = fmt.Sprintf("NEW...%s", p.PostVersion)
+		}
+		commitMessage += "\n" + p.Name + ": " + version
+	}
+	diff.CommitMessage = commitMessage
 
 	return diff
 }

@@ -29,7 +29,7 @@ func SwitchBranch(branch string) error {
 }
 
 // CreateMergeBranch creates the merge branch using git
-func CreateMergeBranch() error {
+func CreateMergeBranch(diff ComposerDiff) error {
 	if err := gitSetup(); err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func CreateMergeBranch() error {
 		fmt.Println(out)
 		return err
 	}
-	if out, err := runQuiet(Config.GitPath, "commit", "-m", "$ composer update"); err != nil {
+	if out, err := runQuiet(Config.GitPath, "commit", "-m", diff.CommitMessage); err != nil {
 		fmt.Println(out)
 		return err
 	}
