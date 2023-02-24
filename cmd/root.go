@@ -67,7 +67,7 @@ Documentation:
 			os.Exit(1)
 		}
 
-		if err := app.CreateMergeBranch(); err != nil {
+		if err := app.CreateMergeBranch(diff); err != nil {
 			fmt.Printf("\n==========\nError creating merge request: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
@@ -98,8 +98,16 @@ func Execute() {
 func init() {
 	rootCmd.Flags().StringSliceVarP(&app.Config.ComposerFlags, "composer-flags", "f", []string{}, "Custom composer flags")
 	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
+	rootCmd.Flags().StringVarP(&app.Config.GitCommitTitle, "commit-title", "t", "Update composer dependencies", "The git commit message title")
+
 	if err := rootCmd.Flags().MarkHidden("repo"); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
+	// hide help command
+	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
+	// hide help flag
+	rootCmd.PersistentFlags().BoolP("help", "h", false, "This help")
+	rootCmd.PersistentFlags().Lookup("help").Hidden = true
 }

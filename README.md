@@ -70,15 +70,17 @@ Regardless what branch your schedule is set to run on, the latest `<source-branc
 
 The tool has several options which can be configured via GitLab CI variables, either to your project or alternatively inherited via the group variables. The only required variable is `COMPOSER_MR_TOKEN`, the rest are optional.
 
-|CI environment variable|Default|Description|
---- | :---: | ---
-|**`COMPOSER_MR_TOKEN`**       |      |**User token for merge requests (required)**        |
-|`COMPOSER_MR_COMPOSER_VERSION`|`2`   |Composer version (1 or 2)                           |
-|`COMPOSER_MR_BRANCH_PREFIX`   |      |MR branch prefix, eg "feature/"                     |
-|`COMPOSER_MR_LABELS`          |      |MR labels (comma-separated)                         |
-|`COMPOSER_MR_ASSIGNEES`       |      |MR assignees (comma-separated usernames)            |
-|`COMPOSER_MR_REVIEWERS`       |      |MR reviewers (comma-separated usernames)            |
-|`COMPOSER_MR_REPLACE_OPEN`    |`true`|Replace outdated open composer-update merge requests|
+| CI environment variable        | Default                        | Description                                          |
+|--------------------------------|--------------------------------|------------------------------------------------------|
+| **`COMPOSER_MR_TOKEN`**        |                                | **User token for merge requests (required)**         |
+| `COMPOSER_MR_COMPOSER_VERSION` | `2`                            | Composer version (1 or 2)                            |
+| `COMPOSER_MR_BRANCH_PREFIX`    |                                | MR branch prefix, eg "feature/"                      |
+| `COMPOSER_MR_LABELS`           |                                | MR labels (comma-separated)                          |
+| `COMPOSER_MR_ASSIGNEES`        |                                | MR assignees (comma-separated usernames)             |
+| `COMPOSER_MR_REVIEWERS`        |                                | MR reviewers (comma-separated usernames)             |
+| `COMPOSER_MR_REPLACE_OPEN`     | `true`                         | Replace outdated open composer-update merge requests |
+| `COMPOSER_MR_COMMIT_TITLE`     | `Update composer dependencies` | Set the commit message title (first line)            |
+
 
 
 ## Environment variable notes
@@ -112,6 +114,13 @@ GitLab Composer Updater MR will always add a checksum of the `composer.lock` to 
 If no matching checksum in a merge request is found, then any previous outdated **open** merge request is closed and their branches removed. If you do not want this behavior then set this environment variable to `false`.
 
 In both instances, merge requests must match the same labels (if set), created by the same user (that owns the `COMPOSER_MR_TOKEN`), and have a title starting with `Composer update: `.
+
+
+### `COMPOSER_MR_COMMIT_TITLE`
+
+You can set a custom git commit message title by setting an environment value `COMPOSER_MR_COMMIT_TITLE`, or by adding the commandline flag `-t "<title>"`.
+
+The default commit message (first line) is "Update composer dependencies". Commit messages will always include the list of updated packages below the set title.
 
 
 ---
