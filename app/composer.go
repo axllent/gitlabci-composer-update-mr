@@ -129,7 +129,7 @@ func CompareDiffs(pre, post ComposerLock) ComposerDiff {
 	}
 	diff.Description = description
 
-	// generate git commit message
+	// append to the git commit message
 	diff.CommitMessage += "\n"
 	for _, p := range diff.Packages {
 		version := fmt.Sprintf("%s...REMOVED", p.PreVersion)
