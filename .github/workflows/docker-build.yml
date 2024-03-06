@@ -89,3 +89,11 @@ jobs:
           file: docker/Dockerfile-8.2
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:8.2
+
+      - name: Build and push 8.3
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/Dockerfile-8.3
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:8.3
