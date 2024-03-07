@@ -1,9 +1,10 @@
+// Package app is the main application
 package app
 
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/url"
 	"os"
 	"regexp"
@@ -30,7 +31,7 @@ func ParseComposerLock() (ComposerLock, error) {
 		return v, err
 	}
 
-	b, err := ioutil.ReadAll(jsonFile)
+	b, err := io.ReadAll(jsonFile)
 	if err != nil {
 		return v, err
 	}
