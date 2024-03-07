@@ -12,16 +12,16 @@ import (
 )
 
 // EnvString will return an environment variable, else a default
-func envString(key, dflt string) string {
+func envString(key, defaultValue string) string {
 	if os.Getenv(key) != "" {
 		return strings.TrimSpace(os.Getenv(key))
 	}
-	return dflt
+	return defaultValue
 }
 
 // EnvInt will return an environment int, else a default
-func envInt(key string, dflt int) int {
-	val := dflt
+func envInt(key string, defaultValue int) int {
+	val := defaultValue
 	if os.Getenv(key) != "" {
 		i, err := strconv.Atoi(os.Getenv(key))
 		if err == nil && i > 0 {
@@ -32,15 +32,15 @@ func envInt(key string, dflt int) int {
 }
 
 // EnvCSVSlice will return an environment CSV slice, else a default
-func envCSVSlice(key string, dflt []string) []string {
+func envCSVSlice(key string, defaultValues []string) []string {
 	if os.Getenv(key) != "" {
 		return strings.Split(os.Getenv(key), ",")
 	}
-	return dflt
+	return defaultValues
 }
 
 // EnvTrue will return an environment boolean, else a default
-func envTrue(key string, dflt bool) bool {
+func envTrue(key string, defaultValue bool) bool {
 	if os.Getenv(key) != "" {
 		options := make(map[string]bool)
 		options["true"] = true
@@ -57,7 +57,7 @@ func envTrue(key string, dflt bool) bool {
 			return val
 		}
 	}
-	return dflt
+	return defaultValue
 }
 
 // IsFile returns if a path is a file

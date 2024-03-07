@@ -71,14 +71,14 @@ func MRExists(checksum string) bool {
 	}
 
 	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
-	labels := gitlab.Labels{}
+	labels := gitlab.LabelOptions{}
 	for _, lbl := range lbls {
 		labels = append(labels, lbl)
 	}
 
 	opts := gitlab.ListProjectMergeRequestsOptions{
-		State:        gitlab.String("opened"),
-		TargetBranch: gitlab.String(Config.GitBranch),
+		State:        gitlab.Ptr("opened"),
+		TargetBranch: gitlab.Ptr(Config.GitBranch),
 		Labels:       &labels,
 	}
 
@@ -115,14 +115,14 @@ func RemoveOldMRs() error {
 	}
 
 	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
-	labels := gitlab.Labels{}
+	labels := gitlab.LabelOptions{}
 	for _, lbl := range lbls {
 		labels = append(labels, lbl)
 	}
 
 	opts := gitlab.ListProjectMergeRequestsOptions{
-		State:        gitlab.String("opened"),
-		TargetBranch: gitlab.String(Config.GitBranch),
+		State:        gitlab.Ptr("opened"),
+		TargetBranch: gitlab.Ptr(Config.GitBranch),
 		Labels:       &labels,
 	}
 
@@ -156,17 +156,17 @@ func CreateMergeRequest(title, description string) error {
 	}
 
 	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
-	labels := gitlab.Labels{}
+	labels := gitlab.LabelOptions{}
 	for _, lbl := range lbls {
 		labels = append(labels, lbl)
 	}
 
 	opts := gitlab.CreateMergeRequestOptions{
-		Title:              gitlab.String(title),
-		Description:        gitlab.String(description),
-		SourceBranch:       gitlab.String(Config.MRBranch),
-		TargetBranch:       gitlab.String(Config.GitBranch),
-		RemoveSourceBranch: gitlab.Bool(true),
+		Title:              gitlab.Ptr(title),
+		Description:        gitlab.Ptr(description),
+		SourceBranch:       gitlab.Ptr(Config.MRBranch),
+		TargetBranch:       gitlab.Ptr(Config.GitBranch),
+		RemoveSourceBranch: gitlab.Ptr(true),
 		AssigneeIDs:        getAssigneeIDS(),
 		ReviewerIDs:        getReviewerIDS(),
 		Labels:             &labels,
