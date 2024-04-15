@@ -80,6 +80,7 @@ The tool has several options which can be configured via GitLab CI variables, ei
 | `COMPOSER_MR_REVIEWERS`        |                                | MR reviewers (comma-separated usernames)             |
 | `COMPOSER_MR_REPLACE_OPEN`     | `true`                         | Replace outdated open composer-update merge requests |
 | `COMPOSER_MR_COMMIT_TITLE`     | `Update composer dependencies` | Set the commit message title (first line)            |
+| `COMPOSER_MR_TITLE_PREFIX`     | `Composer update: `            | Set the first part of the merge request title        |
 
 
 
