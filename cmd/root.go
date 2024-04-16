@@ -77,7 +77,7 @@ Documentation:
 			pkgs = "packages"
 		}
 
-		mrTitle := fmt.Sprintf(app.Config.MRTitlePrefix + "%d %s", len(diff.Packages), pkgs)
+		mrTitle := fmt.Sprintf("%s %d %s", app.Config.MRTitlePrefix, len(diff.Packages), pkgs)
 
 		if err := app.CreateMergeRequest(mrTitle, diff.Description); err != nil {
 			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
