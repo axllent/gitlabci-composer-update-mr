@@ -79,7 +79,7 @@ func BuildConfig() {
 
 	Config.GitCommitTitle = envString("COMPOSER_MR_COMMIT_TITLE", Config.GitCommitTitle)
 
-	Config.MRTitlePrefix = envString("COMPOSER_MR_TITLE_PREFIX", "Composer update: ")
+	Config.MRTitlePrefix = envString("COMPOSER_MR_TITLE_PREFIX", Config.MRTitlePrefix)
 
 	if len(errors) == 0 {
 		// test if project's merge requests are accessible

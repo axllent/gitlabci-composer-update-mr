@@ -99,6 +99,7 @@ func init() {
 	rootCmd.Flags().StringSliceVarP(&app.Config.ComposerFlags, "composer-flags", "f", []string{}, "Custom composer flags")
 	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
 	rootCmd.Flags().StringVarP(&app.Config.GitCommitTitle, "commit-title", "t", "Update composer dependencies", "The git commit message title")
+	rootCmd.Flags().StringVarP(&app.Config.MRTitlePrefix, "mr-title-prefix", "p", "Composer update:", "The merge request title prefix")
 
 	if err := rootCmd.Flags().MarkHidden("repo"); err != nil {
 		fmt.Println(err)
