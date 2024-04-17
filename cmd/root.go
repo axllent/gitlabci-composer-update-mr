@@ -77,7 +77,7 @@ Documentation:
 			pkgs = "packages"
 		}
 
-		mrTitle := fmt.Sprintf("Composer update: %d %s", len(diff.Packages), pkgs)
+		mrTitle := fmt.Sprintf("%s %d %s", app.Config.MRTitlePrefix, len(diff.Packages), pkgs)
 
 		if err := app.CreateMergeRequest(mrTitle, diff.Description); err != nil {
 			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
@@ -99,6 +99,7 @@ func init() {
 	rootCmd.Flags().StringSliceVarP(&app.Config.ComposerFlags, "composer-flags", "f", []string{}, "Custom composer flags")
 	rootCmd.Flags().StringVarP(&app.Config.RepoDir, "repo", "r", ".", "Repository directory")
 	rootCmd.Flags().StringVarP(&app.Config.GitCommitTitle, "commit-title", "t", "Update composer dependencies", "The git commit message title")
+	rootCmd.Flags().StringVarP(&app.Config.MRTitlePrefix, "mr-title-prefix", "p", "Composer update:", "The merge request title prefix")
 
 	if err := rootCmd.Flags().MarkHidden("repo"); err != nil {
 		fmt.Println(err)
