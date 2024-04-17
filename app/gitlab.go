@@ -137,7 +137,7 @@ func RemoveOldMRs() error {
 	}
 
 	for _, mr := range mrs {
-		if strings.HasPrefix(mr.Title, "Composer update: ") {
+		if strings.HasPrefix(mr.Title, Config.MRTitlePrefix) {
 			if err := deleteOriginBranch(mr.SourceBranch); err != nil {
 				return err
 			}

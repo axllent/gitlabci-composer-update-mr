@@ -38,6 +38,9 @@ var (
 		// MRBranch is the branch name for the merge request
 		MRBranch string
 
+		// MRTitlePrefix is the first part of the merge request title
+		MRTitlePrefix string
+
 		// GitCommitTitle is the first line of the git commit message
 		GitCommitTitle string
 	}
@@ -75,6 +78,8 @@ func BuildConfig() {
 	Config.MRBranch = fmt.Sprintf("%scomposer-update-%s", envString("COMPOSER_MR_BRANCH_PREFIX", ""), t)
 
 	Config.GitCommitTitle = envString("COMPOSER_MR_COMMIT_TITLE", Config.GitCommitTitle)
+
+	Config.MRTitlePrefix = envString("COMPOSER_MR_TITLE_PREFIX", Config.MRTitlePrefix)
 
 	if len(errors) == 0 {
 		// test if project's merge requests are accessible
