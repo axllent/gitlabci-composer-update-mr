@@ -80,7 +80,7 @@ The tool has several options which can be configured via GitLab CI variables, ei
 | `COMPOSER_MR_REVIEWERS`        |                                | MR reviewers (comma-separated usernames)             |
 | `COMPOSER_MR_REPLACE_OPEN`     | `true`                         | Replace outdated open composer-update merge requests |
 | `COMPOSER_MR_COMMIT_TITLE`     | `Update composer dependencies` | Set the commit message title (first line)            |
-| `COMPOSER_MR_TITLE_PREFIX`     | `Composer update: `            | Set the first part of the merge request title        |
+| `COMPOSER_MR_TITLE_PREFIX`     | `Composer update:`             | Set the first part of the merge request title        |
 
 
 
@@ -122,6 +122,14 @@ In both instances, merge requests must match the same labels (if set), created b
 You can set a custom git commit message title by setting an environment value `COMPOSER_MR_COMMIT_TITLE`, or by adding the commandline flag `-t "<title>"`.
 
 The default commit message (first line) is "Update composer dependencies". Commit messages will always include the list of updated packages below the set title.
+
+
+
+### `COMPOSER_MR_TITLE_PREFIX`
+
+You can set the prefix of the merge request title by setting an environment value `COMPOSER_MR_TITLE_PREFIX`, or by adding the commandline flag `-p "<title>"`.
+
+The default prefix is "Composer update:". Please note that this prefix is also used when removing old (stale) merge requests, so ensure you do not use the same prefix as your other manual merge requests!
 
 
 ---
