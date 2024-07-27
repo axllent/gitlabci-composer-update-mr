@@ -18,8 +18,6 @@ Documentation:
   https://github.com/axllent/gitlabci-composer-update-mr
 `,
 	Args: cobra.ExactArgs(3),
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		app.Config.GitUser = args[0]
 		app.Config.GitEmail = args[1]
@@ -32,7 +30,7 @@ Documentation:
 			os.Exit(1)
 		}
 
-		preupdate, err := app.ParseComposerLock()
+		preUpdate, err := app.ParseComposerLock()
 		if err != nil {
 			fmt.Printf("\n==========\nError parsing composer.lock: %s\n==========\n", err.Error())
 			os.Exit(1)
@@ -43,19 +41,19 @@ Documentation:
 			os.Exit(1)
 		}
 
-		postupdate, err := app.ParseComposerLock()
+		postUpdate, err := app.ParseComposerLock()
 		if err != nil {
 			fmt.Printf("\n==========\nError parsing composer.lock: %s\n==========\n", err.Error())
 			os.Exit(1)
 		}
 
 		// check if composer lock has been modified
-		if preupdate.Checksum == postupdate.Checksum {
+		if preUpdate.Checksum == postUpdate.Checksum {
 			fmt.Println("\n==========\nThere are no updated composer modules\n==========")
 			os.Exit(0)
 		}
 
-		diff := app.CompareDiffs(preupdate, postupdate)
+		diff := app.CompareDiffs(preUpdate, postUpdate)
 
 		if app.MRExists(diff.Checksum) {
 			fmt.Printf("\n==========\nAn identical merge request already exists with checksum: %s\n==========\n", diff.Checksum)
@@ -72,12 +70,12 @@ Documentation:
 			os.Exit(1)
 		}
 
-		pkgs := "package"
+		packages := "package"
 		if len(diff.Packages) > 0 {
-			pkgs = "packages"
+			packages = "packages"
 		}
 
-		mrTitle := fmt.Sprintf("%s %d %s", app.Config.MRTitlePrefix, len(diff.Packages), pkgs)
+		mrTitle := fmt.Sprintf("%s %d %s", app.Config.MRTitlePrefix, len(diff.Packages), packages)
 
 		if err := app.CreateMergeRequest(mrTitle, diff.Description); err != nil {
 			fmt.Printf("\n==========\n%s\n==========\n", err.Error())
