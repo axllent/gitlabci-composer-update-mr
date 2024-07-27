@@ -70,9 +70,9 @@ func MRExists(checksum string) bool {
 		return false
 	}
 
-	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
+	mrLabels := envCSVSlice("COMPOSER_MR_LABELS", []string{})
 	labels := gitlab.LabelOptions{}
-	for _, lbl := range lbls {
+	for _, lbl := range mrLabels {
 		labels = append(labels, lbl)
 	}
 
@@ -167,10 +167,17 @@ func CreateMergeRequest(title, description string) error {
 		SourceBranch:       gitlab.Ptr(Config.MRBranch),
 		TargetBranch:       gitlab.Ptr(Config.GitBranch),
 		RemoveSourceBranch: gitlab.Ptr(true),
-		AssigneeIDs:        getAssigneeIDS(),
 		ReviewerIDs:        getReviewerIDS(),
 		Labels:             &labels,
 	}
+
+	assignees := getAssigneeIDS()
+	if len(*assignees) == 1 {
+		opts.AssigneeID = &(*assignees)[0]
+	} else {
+		opts.AssigneeIDs = assignees
+	}
+
 	mr, _, err := client.MergeRequests.CreateMergeRequest(os.Getenv("CI_PROJECT_ID"), &opts)
 	if err != nil {
 		return err
@@ -182,9 +189,13 @@ func CreateMergeRequest(title, description string) error {
 		fmt.Println("Labels:", strings.Join(mr.Labels, ", "))
 	}
 
-	if len(mr.Assignees) > 0 {
+	allAssignees := []*gitlab.BasicUser{}
+	allAssignees = append(allAssignees, mr.Assignee)
+	allAssignees = append(allAssignees, mr.Assignees...)
+
+	if len(allAssignees) > 0 {
 		fmt.Println("Assigned to:")
-		for _, a := range mr.Assignees {
+		for _, a := range allAssignees {
 			fmt.Println("-", a.Username)
 		}
 	}
