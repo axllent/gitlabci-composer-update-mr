@@ -114,9 +114,9 @@ func RemoveOldMRs() error {
 		return fmt.Errorf("error authenticating with API: %s", err)
 	}
 
-	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
+	mrLabels := envCSVSlice("COMPOSER_MR_LABELS", []string{})
 	labels := gitlab.LabelOptions{}
-	for _, lbl := range lbls {
+	for _, lbl := range mrLabels {
 		labels = append(labels, lbl)
 	}
 
@@ -155,9 +155,9 @@ func CreateMergeRequest(title, description string) error {
 		return err
 	}
 
-	lbls := envCSVSlice("COMPOSER_MR_LABELS", []string{})
+	mrLabels := envCSVSlice("COMPOSER_MR_LABELS", []string{})
 	labels := gitlab.LabelOptions{}
-	for _, lbl := range lbls {
+	for _, lbl := range mrLabels {
 		labels = append(labels, lbl)
 	}
 
