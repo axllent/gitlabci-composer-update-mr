@@ -54,26 +54,23 @@ func ParseComposerLock() (ComposerLock, error) {
 
 // CompareDiffs will return a ComposerDiff struct for parsing
 func CompareDiffs(pre, post ComposerLock) ComposerDiff {
-	var prelookup = make(map[string]Package)
+	var preLookup = make(map[string]Package)
 
 	var diff = ComposerDiff{}
 	diff.Checksum = post.Checksum
-	// var postlookup = make(map[string]Package)
 
 	for _, p := range pre.Packages {
-		prelookup[p.Name] = p
+		preLookup[p.Name] = p
 	}
 
 	for _, p := range pre.PackagesDev {
-		prelookup[p.Name] = p
+		preLookup[p.Name] = p
 	}
 
-	newpackages := append(post.Packages, post.PackagesDev...)
+	newPackages := append(post.Packages, post.PackagesDev...)
 
-	// var p = []ComposerDiffPackage{}
-
-	for _, post := range newpackages {
-		pre, ok := prelookup[post.Name]
+	for _, post := range newPackages {
+		pre, ok := preLookup[post.Name]
 		dp := ComposerDiffPackage{}
 		dp.Name = post.Name
 		dp.PostVersion = post.Version
@@ -91,11 +88,11 @@ func CompareDiffs(pre, post ComposerLock) ComposerDiff {
 			diff.Packages = append(diff.Packages, dp)
 		}
 
-		delete(prelookup, pre.Name)
+		delete(preLookup, pre.Name)
 	}
 
 	// deleted packages
-	for _, del := range prelookup {
+	for _, del := range preLookup {
 		dp := ComposerDiffPackage{}
 		dp.Name = del.Name
 		dp.PreVersion = del.Version
